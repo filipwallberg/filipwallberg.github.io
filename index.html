@@ -121,6 +121,12 @@
             });
             document.querySelector(".push-no").addEventListener("click", function (e) {
 
+                var onesignalTags = {
+                    tags: {
+                        pushnews: 1
+                    },
+                };
+
                 try {
                     median.onesignal.userPrivacyConsent.grant();
                 } catch (error) {
@@ -128,7 +134,7 @@
                 }
 
                 try {
-                    median.onesignal.tags.deleteTags({ tags: ['pushnews'] })
+                    median.onesignal.tags.setTags(onesignalTags);
                 } catch (error) {
                     Sentry.captureException(error);
                 }
