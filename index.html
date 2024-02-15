@@ -81,9 +81,11 @@
             document.querySelector(".push-yes").addEventListener("click", function (e) {
                 median.onesignal.userPrivacyConsent.grant();
                 median.onesignal.register();
+                median.window.close();
             });
             document.querySelector(".push-no").addEventListener("click", function (e) {
                 median.onesignal.userPrivacyConsent.revoke();
+                median.onesignal.unregister();
                 median.window.close();
             });
         </script>
