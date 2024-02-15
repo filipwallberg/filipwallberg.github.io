@@ -114,10 +114,19 @@
                         },
                     };
 
-                    gonative.onesignal.userPrivacyConsent.grant();
-                    gonative.onesignal.tags.setTags(onesignalTags);
-                    gonative.onesignal.userPrivacyConsent.revoke();
-                    gonative.window.close();
+                    gonative.onesignal.userPrivacyConsent.grant({ callback: a1 });
+
+                    function a1() {
+                        gonative.onesignal.tags.setTags({ onesignalTags, callback: a2 });
+                    }
+
+                    function a2() {
+                        gonative.onesignal.userPrivacyConsent.revoke({ callback: a3 });
+                    }
+
+                    function a3() {
+                        gonative.window.close();
+                    }
 
                 } catch (error) {
 
