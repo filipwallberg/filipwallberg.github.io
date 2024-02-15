@@ -92,13 +92,17 @@
                 };
 
                 try {
+
                     median.onesignal.userPrivacyConsent.grant();
                     median.onesignal.register();
                     median.onesignal.tags.setTags(onesignalTags);
                     median.onesignal.userPrivacyConsent.revoke();
                     median.window.close();
+
                 } catch (error) {
+
                     Sentry.captureException(error);
+
                 }
 
             };
@@ -112,12 +116,16 @@
                 };
 
                 try {
+
                     median.onesignal.userPrivacyConsent.grant();
                     median.onesignal.tags.setTags(onesignalTags);
                     median.onesignal.userPrivacyConsent.revoke();
                     median.window.close();
+
                 } catch (error) {
+
                     Sentry.captureException(error);
+
                 }
             };
 
