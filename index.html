@@ -2,6 +2,7 @@
 <html lang="en">
 
     <head>
+        <script src="https://js.sentry-cdn.com/eb65ee51a995eb4c0bb41a2075bf29ce.min.js" crossorigin="anonymous"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -34,8 +35,6 @@
                 width: 80%;
                 box-shadow: rgb(0 0 0 / 30%) 0px 0px 12.5px, rgb(0 0 0 / 15%) 0px 0px 2.5px;
             }
-
-
 
             .push-yes {
                 font-size: 20px;
@@ -79,19 +78,17 @@
 
         <p id="oneSignalArea"></p>
 
-        <script src="https://js.sentry-cdn.com/eb65ee51a995eb4c0bb41a2075bf29ce.min.js" crossorigin="anonymous"></script>
-
         <script>
 
             function pushyes() {
 
-                var onesignalTags = {
-                    tags: {
-                        pushnews: 1
-                    },
-                };
-
                 try {
+
+                    var onesignalTags = {
+                        tags: {
+                            pushnews: 1
+                        },
+                    };
 
                     median.onesignal.userPrivacyConsent.grant();
                     median.onesignal.register();
@@ -109,13 +106,13 @@
 
             function pushno() {
 
-                var onesignalTags = {
-                    tags: {
-                        pushnews: 0
-                    },
-                };
-
                 try {
+
+                    var onesignalTags = {
+                        tags: {
+                            pushnews: 0
+                        },
+                    };
 
                     median.onesignal.userPrivacyConsent.grant();
                     median.onesignal.tags.setTags(onesignalTags);
