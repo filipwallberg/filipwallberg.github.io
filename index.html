@@ -115,14 +115,8 @@
             });
             document.querySelector(".push-no").addEventListener("click", function (e) {
 
-                var onesignalTags = {
-                    tags: {
-                        pushnews: 0
-                    },
-                };
-
                 try {
-                    median.onesignal.tags.setTags(onesignalTags);
+                    median.onesignal.tags.deleteTags({ tags: ['pushnews'] })
                 } catch (error) {
                     Sentry.captureException(error);
                 }
