@@ -51,7 +51,7 @@
             .push-no {
                 font-size: 20px;
                 color: #fff;
-                background-color: #dadada;
+                background-color: #a9a9a9;
                 width: 100%;
                 padding: 12px;
                 border-radius: 4px;
@@ -81,12 +81,29 @@
             document.querySelector(".push-yes").addEventListener("click", function (e) {
                 median.onesignal.userPrivacyConsent.grant();
                 median.onesignal.register();
+
+                var onesignalTags = {
+                    tags: {
+                        pushnews: 1
+                    },
+                };
+
+                median.onesignal.tags.setTags(onesignalTags)
                 median.window.close();
             });
             document.querySelector(".push-no").addEventListener("click", function (e) {
+
+                var onesignalTags = {
+                    tags: {
+                        pushnews: 0
+                    },
+                };
+
+                median.onesignal.tags.setTags(onesignalTags)
                 median.onesignal.userPrivacyConsent.revoke();
                 median.window.close();
             });
+
         </script>
     </body>
 
