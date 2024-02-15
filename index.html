@@ -2,7 +2,6 @@
 <html lang="en">
 
     <head>
-        <script src="https://js.sentry-cdn.com/eb65ee51a995eb4c0bb41a2075bf29ce.min.js" crossorigin="anonymous"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -82,48 +81,33 @@
 
             function pushyes() {
 
-                try {
+                var onesignalTags = {
+                    tags: {
+                        pushnews: 1
+                    },
+                };
 
-                    var onesignalTags = {
-                        tags: {
-                            pushnews: 1
-                        },
-                    };
-
-                    median.onesignal.userPrivacyConsent.grant();
-                    median.onesignal.register();
-                    median.onesignal.tags.setTags(onesignalTags);
-                    // median.onesignal.userPrivacyConsent.revoke();
-                    median.window.close();
-
-                } catch (error) {
-
-                    Sentry.captureException(error);
-
-                }
+                median.onesignal.userPrivacyConsent.grant();
+                median.onesignal.register();
+                median.onesignal.tags.setTags(onesignalTags);
+                median.onesignal.userPrivacyConsent.revoke();
+                median.window.close();
 
             };
 
             function pushno() {
 
-                try {
+                var onesignalTags = {
+                    tags: {
+                        pushnews: 0
+                    },
+                };
 
-                    var onesignalTags = {
-                        tags: {
-                            pushnews: 0
-                        },
-                    };
+                median.onesignal.userPrivacyConsent.grant();
+                median.onesignal.tags.setTags(onesignalTags);
+                median.onesignal.userPrivacyConsent.revoke();
+                median.window.close();
 
-                    median.onesignal.userPrivacyConsent.grant();
-                    median.onesignal.tags.setTags(onesignalTags);
-                    // median.onesignal.userPrivacyConsent.revoke();
-                    median.window.close();
-
-                } catch (error) {
-
-                    Sentry.captureException(error);
-
-                }
             };
 
         </script>
