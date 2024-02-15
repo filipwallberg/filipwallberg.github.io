@@ -77,10 +77,10 @@
 
         </div>
 
+        <script src="https://js.sentry-cdn.com/eb65ee51a995eb4c0bb41a2075bf29ce.min.js" crossorigin="anonymous"></script>
+
         <script>
             document.querySelector(".push-yes").addEventListener("click", function (e) {
-                median.onesignal.userPrivacyConsent.grant();
-                median.onesignal.register();
 
                 var onesignalTags = {
                     tags: {
@@ -88,8 +88,30 @@
                     },
                 };
 
-                median.onesignal.tags.setTags(onesignalTags)
-                median.window.close();
+                try {
+                    median.onesignal.userPrivacyConsent.grant();
+                } catch (error) {
+                    Sentry.captureException(error);
+                }
+
+                try {
+                    median.onesignal.register();
+                } catch (error) {
+                    Sentry.captureException(error);
+                }
+
+                try {
+                    median.onesignal.tags.setTags(onesignalTags);
+                } catch (error) {
+                    Sentry.captureException(error);
+                }
+
+                try {
+                    median.window.close();
+                } catch (error) {
+                    Sentry.captureException(error);
+                }
+
             });
             document.querySelector(".push-no").addEventListener("click", function (e) {
 
@@ -99,9 +121,23 @@
                     },
                 };
 
-                median.onesignal.tags.setTags(onesignalTags)
-                median.onesignal.userPrivacyConsent.revoke();
-                median.window.close();
+                try {
+                    median.onesignal.tags.setTags(onesignalTags);
+                } catch (error) {
+                    Sentry.captureException(error);
+                }
+
+                try {
+                    median.onesignal.userPrivacyConsent.revoke();
+                } catch (error) {
+                    Sentry.captureException(error);
+                }
+
+                try {
+                    median.window.close();
+                } catch (error) {
+                    Sentry.captureException(error);
+                }
             });
 
         </script>
