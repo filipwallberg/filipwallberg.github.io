@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Onesignal In-App Message</title>
+        <title>Push ok</title>
         <style>
             body {
                 margin: 0;
@@ -107,55 +107,19 @@
         <div class="center-modal">
             <div class="close-button" data-onesignal-unique-label="close-button">
             </div>
-            <h1>Heading</h1>
+            <h1>Push-beskeder</h1>
             <div class="button-container">
                 <div class="button-column">
-                    <button class="open-url" data-onesignal-unique-label="my-open-url-button">Open URL</button>
-                    <button class="tag-user" data-onesignal-unique-label="my-tag-user-button">Tag User</button>
-                    <!--
-            In-App Messages with a Push Permission Prompt button will not be shown to
-            users who have already allowed notifications.
-            If users have previously denied push permission when shown the native
-            prompt, this button will open the device settings for your app.
-            For Android 13+ users, ensure you are using a version of the
-            OneSignal SDK released after July 2022.
-            Learn More: https://documentation.onesignal.com/docs/how-to-prompt-for-push-permissions-with-an-in-app-message
-          -->
-                    <button class="push-prompt" data-onesignal-unique-label="my-push-prompt-button">Prompt Push</button>
-                    <button class="location-prompt" data-onesignal-unique-label="my-location-prompt-button">Prompt Location</button>
-                </div>
-                <div class="button-column">
-                    <button class="add-click-name" data-onesignal-unique-label="my-add-click-name-button">Add Click Name</button>
-                    <button class="send-outcome" data-onesignal-unique-label="my-send-outcome-button">Send Outcome</button>
+                    <button class="push-ok" data-onesignal-unique-label="push-ok">Open URL</button>
                 </div>
             </div>
-        </div>
-        <script>
-            // Your code here
-            document.querySelector(".close-button").addEventListener("click", function (e) {
-                OneSignalIamApi.close(e);
-            });
-            document.querySelector(".tag-user").addEventListener("click", function (e) {
-                OneSignalIamApi.tagUser(e, { fiz: "baz" });
-            });
-            document.querySelector(".push-prompt").addEventListener("click", function (e) {
-                // Invoke the OneSignalIamApi.triggerPushPrompt method here while here passing in the event
-                // If this method is utilized then the message will not be sent to Android devices or older
-                // iOS devices where push prompting is not supported.
-            });
-            document.querySelector(".location-prompt").addEventListener("click", function (e) {
-                OneSignalIamApi.triggerLocationPrompt(e);
-            });
-            document.querySelector(".add-click-name").addEventListener("click", function (e) {
-                OneSignalIamApi.addClickName(e, "test_click_name");
-            });
-            document.querySelector(".send-outcome").addEventListener("click", function (e) {
-                OneSignalIamApi.sendOutcome(e, "test_outcome");
-            });
-            document.querySelector(".open-url").addEventListener("click", function (e) {
-                OneSignalIamApi.openUrl(e, "https://documentation.onesignal.com/docs/in-app-js-library");
-            });
-        </script>
+            <script>
+                document.querySelector(".push-ok").addEventListener("click", function (e) {
+                    median.onesignal.userPrivacyConsent.grant();
+                    median.onesignal.register();
+                    median.onesignal.userPrivacyConsent.revoke();
+                });
+            </script>
     </body>
 
 </html>
