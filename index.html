@@ -95,28 +95,19 @@
                     },
                 };
 
-                async function registerAndSetTags(onesignalTags) {
+                async function pushyesSub(onesignalTags) {
                     try {
-                        // Først, afvent registreringen med OneSignal
                         await median.onesignal.register();
-                        console.log("Registration completed successfully.");
-
-                        // Derefter, afvent sætning af tags med OneSignal
                         await median.onesignal.tags.setTags(onesignalTags);
-                        console.log("Tags set successfully.");
 
-                        // Fortsæt med yderligere kode her efter begge operationer er fuldført
                     } catch (error) {
-                        // Håndter eventuelle fejl, der opstår under registrering eller sætning af tags
                         console.error("An error occurred:", error);
                     }
                 }
 
-                registerAndSetTags(onesignalTags)
+                pushyesSub(onesignalTags)
 
-                // median.onesignal.register();
-                // median.onesignal.tags.setTags(onesignalTags);
-                // median.window.close();
+                median.window.close();
 
             };
 
@@ -128,8 +119,19 @@
                     },
                 };
 
-                median.onesignal.tags.setTags(onesignalTags);
-                // median.window.close();
+
+                async function pushnoSub(onesignalTags) {
+                    try {
+                        await median.onesignal.tags.setTags(onesignalTags);
+
+                    } catch (error) {
+                        console.error("An error occurred:", error);
+                    }
+                }
+
+                pushnoSub(onesignalTags)
+
+                median.window.close();
 
             };
 
