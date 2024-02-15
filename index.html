@@ -109,14 +109,21 @@
             </div>
             <h1>Push-beskeder</h1>
             <div class="button-container">
+
                 <div class="button-column">
-                    <button class="push-ok" data-onesignal-unique-label="push-ok">Open URL</button>
+                    <button class="push-yes" data-onesignal-unique-label="push-ok">push yes</button>
+                </div>
+
+                <div class="button-column">
+                    <button class="push-no" data-onesignal-unique-label="push-ok">push no</button>
                 </div>
             </div>
             <script>
-                document.querySelector(".push-ok").addEventListener("click", function (e) {
+                document.querySelector(".push-yes").addEventListener("click", function (e) {
                     median.onesignal.userPrivacyConsent.grant();
                     median.onesignal.register();
+                });
+                document.querySelector(".push-no").addEventListener("click", function (e) {
                     median.onesignal.userPrivacyConsent.revoke();
                 });
             </script>
