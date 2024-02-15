@@ -90,10 +90,10 @@
                         },
                     };
 
-                    gonative.onesignal.userPrivacyConsent.grant();
-                    gonative.onesignal.register();
-                    gonative.onesignal.tags.setTags(onesignalTags);
-                    gonative.onesignal.userPrivacyConsent.revoke();
+                    median.onesignal.userPrivacyConsent.grant();
+                    median.onesignal.register();
+                    median.onesignal.tags.setTags(onesignalTags);
+                    median.onesignal.userPrivacyConsent.revoke();
                     median.window.close();
 
                 } catch (error) {
@@ -114,19 +114,19 @@
                         },
                     };
 
-                    gonative.onesignal.userPrivacyConsent.grant({ callback: a1 });
+                    median.onesignal.userPrivacyConsent.grant();
 
-                    function a1() {
-                        gonative.onesignal.tags.setTags({ onesignalTags, callback: a2 });
-                    }
+                    setTimeout(function () {
+                        median.onesignal.tags.setTags(onesignalTags);
 
-                    function a2() {
-                        gonative.onesignal.userPrivacyConsent.revoke({ callback: a3 });
-                    }
+                        setTimeout(function () {
+                            median.onesignal.userPrivacyConsent.revoke();
 
-                    function a3() {
-                        gonative.window.close();
-                    }
+                            setTimeout(function () {
+                                median.window.close();
+                            }, 500);
+                        }, 500);
+                    }, 500);
 
                 } catch (error) {
 
