@@ -72,8 +72,8 @@
 
             <p style="font-size: 30px; margin-bottom: 40px;">Vil du have besked, når der sker noget stort i Syd- og Sønderjylland? Så tilmeld dig her og få besked.</p>
 
-            <button class="push-yes" data-onesignal-unique-label="push-yes">Ja, tak. Giv mig besked!</button>
-            <button class="push-no" data-onesignal-unique-label="push-no">Nej tak</button>
+            <button class="push-yes" onclick="pushyes();">Ja, tak. Giv mig besked!</button>
+            <button class="push-no" onclick="pushno();">Nej tak</button>
 
         </div>
 
@@ -83,17 +83,7 @@
 
         <script>
 
-            function median_onesignal_info(oneSignalInfo) {
-                document.getElementById("oneSignalArea").value = JSON.stringify(oneSignalInfo);
-            }
-
-            /* Promise */
-            async function promiseFunction() {
-                let oneSignalInfo = await median.onesignal.onesignalInfo();
-                document.getElementById("oneSignalArea").innerText = JSON.stringify(oneSignalInfo);
-            }
-
-            document.querySelector(".push-yes").addEventListener("click", function (e) {
+            function pushyes() {
 
                 var onesignalTags = {
                     tags: {
@@ -103,37 +93,17 @@
 
                 try {
                     median.onesignal.userPrivacyConsent.grant();
-                } catch (error) {
-                    Sentry.captureException(error);
-                }
-
-                try {
                     median.onesignal.register();
-                } catch (error) {
-                    Sentry.captureException(error);
-                }
-
-                try {
                     median.onesignal.tags.setTags(onesignalTags);
-                } catch (error) {
-                    Sentry.captureException(error);
-                }
-
-                try {
                     median.onesignal.userPrivacyConsent.revoke();
-                } catch (error) {
-                    Sentry.captureException(error);
-                }
-
-                try {
                     median.window.close();
                 } catch (error) {
                     Sentry.captureException(error);
                 }
 
-            });
+            };
 
-            document.querySelector(".push-no").addEventListener("click", function (e) {
+            function pushno() {
 
                 var onesignalTags = {
                     tags: {
@@ -143,23 +113,8 @@
 
                 try {
                     median.onesignal.userPrivacyConsent.grant();
-                } catch (error) {
-                    Sentry.captureException(error);
-                }
-
-                try {
                     median.onesignal.tags.setTags(onesignalTags);
-                } catch (error) {
-                    Sentry.captureException(error);
-                }
-
-                try {
                     median.onesignal.userPrivacyConsent.revoke();
-                } catch (error) {
-                    Sentry.captureException(error);
-                }
-
-                try {
                     median.window.close();
                 } catch (error) {
                     Sentry.captureException(error);
