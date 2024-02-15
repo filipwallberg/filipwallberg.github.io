@@ -91,22 +91,10 @@
                     };
 
                     median.onesignal.userPrivacyConsent.grant();
-
-                    setTimeout(function () {
-                        median.onesignal.register();
-
-                        setTimeout(function () {
-                            median.onesignal.tags.setTags(onesignalTags);
-
-                            setTimeout(function () {
-                                median.onesignal.userPrivacyConsent.revoke();
-
-                                setTimeout(function () {
-                                    median.window.close();
-                                }, 500); // Vent 0,5 sekunder før lukning af vinduet
-                            }, 500); // Vent 0,5 sekunder før tilbagekaldelse af samtykke
-                        }, 500); // Vent 0,5 sekunder efter registrering før sætning af tags
-                    }, 500); // Vent 0,5 sekunder efter tildeling af samtykke før registrering
+                    median.onesignal.register();
+                    median.onesignal.tags.setTags(onesignalTags);
+                    // median.onesignal.userPrivacyConsent.revoke();
+                    median.window.close();
 
                 } catch (error) {
 
@@ -127,18 +115,9 @@
                     };
 
                     median.onesignal.userPrivacyConsent.grant();
-
-                    setTimeout(function () {
-                        median.onesignal.tags.setTags(onesignalTags);
-
-                        setTimeout(function () {
-                            median.onesignal.userPrivacyConsent.revoke();
-
-                            setTimeout(function () {
-                                median.window.close();
-                            }, 500);
-                        }, 500);
-                    }, 500);
+                    median.onesignal.tags.setTags(onesignalTags);
+                    // median.onesignal.userPrivacyConsent.revoke();
+                    median.window.close();
 
                 } catch (error) {
 
