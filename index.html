@@ -78,7 +78,14 @@
         <p id="oneSignalArea"></p>
 
         <script>
-            median.onesignal.userPrivacyConsent.grant();
+
+            window.onload = function () {
+                median.onesignal.userPrivacyConsent.grant();
+            };
+
+            window.onbeforeunload = function () {
+                median.onesignal.userPrivacyConsent.revoke();
+            };
 
             function pushyes() {
 
@@ -88,7 +95,6 @@
                     },
                 };
 
-                // median.onesignal.userPrivacyConsent.grant();
                 median.onesignal.register();
                 median.onesignal.tags.setTags(onesignalTags);
                 // median.window.close();
@@ -103,7 +109,6 @@
                     },
                 };
 
-                // median.onesignal.userPrivacyConsent.grant();
                 median.onesignal.tags.setTags(onesignalTags);
                 // median.window.close();
 
