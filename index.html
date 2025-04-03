@@ -16,13 +16,15 @@
             align-items: center;
             height: 100vh;
             text-align: center;
-            background-color: #f0f8ff;
+            background-color: #f1f7fc;
             overflow: hidden;
         }
 
         .container {
-            max-width: 80%;
-            padding: 10px;
+            max-width: 90%;
+            width: 450px;
+            padding: 30px;
+            margin: 20px;
             border-radius: 10px;
             background-color: white;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -117,6 +119,20 @@
         .pulse {
             animation: pulse 1.5s infinite ease-in-out;
         }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 500px) {
+            .container {
+                width: 80%;
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .letter-input {
+                width: 40px;
+                height: 50px;
+            }
+        }
     </style>
 </head>
 
@@ -137,9 +153,9 @@
     <div class="container hidden" id="invitation-container">
         <h1 class="pulse">Hurra! Hurra! Hurra!</h1>
         <div class="invitation">
-            <p>Du er inviteret til fest den 11. april.</p>
-            <p>Vi starter efter frittermad og vi siger farvel kl. 19.30.</p>
-            <p>Sig til dine forældre, at du vil med.</p>
+            <p>Du er inviteret til fest<br />den 11. april.</p>
+            <p>Vi starter efter frittermad<br />- og vi siger farvel kl. 19.30.</p>
+            <p>Sig til dine forældre,<br />at du vil med.</p>
         </div>
 
     </div>
@@ -217,23 +233,36 @@
                     // Størrelse
                     this.size = Math.random() * 15 + 5;
 
-                    // Position - starter fra toppen af skærmen
-                    this.x = Math.random() * canvas.width;
-                    this.y = -this.size;
+                    // Position - starter fra forskellige sider af skærmen
+                    const side = Math.floor(Math.random() * 4); // 0: top, 1: right, 2: bottom, 3: left
 
-                    // Hastighed og rotation
-                    this.vx = Math.random() * 10 - 5;
-                    this.vy = Math.random() * 10 + 5;
+                    if (side === 0) { // Top
+                        this.x = Math.random() * canvas.width;
+                        this.y = -this.size;
+                    } else if (side === 1) { // Right
+                        this.x = canvas.width + this.size;
+                        this.y = Math.random() * canvas.height;
+                    } else if (side === 2) { // Bottom
+                        this.x = Math.random() * canvas.width;
+                        this.y = canvas.height + this.size;
+                    } else { // Left
+                        this.x = -this.size;
+                        this.y = Math.random() * canvas.height;
+                    }
+
+                    // Hastighed og rotation - langsommere bevægelse
+                    this.vx = Math.random() * 6 - 3; // Reduceret fra 10 til 6
+                    this.vy = Math.random() * 6 - 3; // Ændret fra (10+5) til (6-3) for at sprede i alle retninger
                     this.rotation = 0;
                     this.rotationSpeed = Math.random() * 0.2 - 0.1;
 
-                    // Hvor længe partiklen lever
-                    this.life = Math.random() * 100 + 100;
+                    // Hvor længe partiklen lever - øget levetid
+                    this.life = Math.random() * 200 + 200; // Fordoblet levetid
                     this.opacity = 1;
 
-                    // Vind og tyngdekraft
-                    this.gravity = 0.1;
-                    this.wind = Math.random() * 0.1 - 0.05;
+                    // Vind og tyngdekraft - mindre tyngdekraft
+                    this.gravity = 0.05; // Halveret fra 0.1
+                    this.wind = Math.random() * 0.2 - 0.1;
                 }
 
                 update() {
@@ -361,9 +390,9 @@
                     const particle = new Particle();
                     particle.x = x;
                     particle.y = y;
-                    // Send partiklerne i alle retninger
+                    // Send partiklerne i alle retninger - med langsommere hastighed
                     const angle = Math.random() * Math.PI * 2;
-                    const speed = Math.random() * 15 + 5;
+                    const speed = Math.random() * 8 + 3; // Reduceret fra (15+5) til (8+3)
                     particle.vx = Math.cos(angle) * speed;
                     particle.vy = Math.sin(angle) * speed;
                     particles.push(particle);
