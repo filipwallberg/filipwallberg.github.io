@@ -1,145 +1,400 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Push ok</title>
-        <style>
-            body {
-                margin: 0;
-                padding-top: var(--safe-area-inset-top);
-                padding-right: var(--safe-area-inset-right);
-                padding-bottom: calc(var(--safe-area-inset-bottom) + 20px);
-                padding-left: var(--safe-area-inset-left);
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-                background-color: #ed323e;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-color: #f0f8ff;
+            overflow: hidden;
+        }
 
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                /* Tilføjet for at sikre fuld højde af viewport */
+        .container {
+            max-width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 20;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .gaade {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .code-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .letter-input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            text-transform: uppercase;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .invitation {
+            font-size: 24px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            will-change: transform;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
             }
 
-            div {
-                background: #FFF;
-                margin: 0 auto;
-                /* Centrerer div horisontalt */
-                padding: 24px;
-                border-radius: 8px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: 85%;
-                width: 80%;
-                box-shadow: rgb(0 0 0 / 30%) 0px 0px 12.5px, rgb(0 0 0 / 15%) 0px 0px 2.5px;
+            50% {
+                transform: scale(1.1);
             }
 
-            .push-yes {
-                font-size: 20px;
-                color: #fff;
-                background-color: #ed323e;
-                width: 100%;
-                padding: 12px;
-                border-radius: 4px;
-                border: none;
-                margin-bottom: 12px;
+            100% {
+                transform: scale(1);
             }
+        }
 
-            .push-no {
-                font-size: 18px;
-                color: #fff;
-                background-color: #a9a9a9;
-                width: 100%;
-                padding: 12px;
-                border-radius: 4px;
-                border: none;
-                margin-bottom: 20px;
-            }
+        .pulse {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+    </style>
+</head>
 
-            .button-container {
-                display: flex;
-                flex-direction: column;
-            }
-        </style>
-    </head>
+<body>
+    <div class="container" id="gaade-container">
+        <div class="gaade">
+            <p>Lad værterne følge alfabetet:</p>
+        </div>
+        <div class="code-input">
+            <input type="text" id="letter1" class="letter-input" maxlength="1">
+            <input type="text" id="letter2" class="letter-input" maxlength="1">
+            <input type="text" id="letter3" class="letter-input" maxlength="1">
+            <input type="text" id="letter4" class="letter-input" maxlength="1">
+        </div>
+        <button onclick="checkAnswer()">TJEK DIT SVAR</button>
+    </div>
 
-    <body>
-
-        <div class="button-container">
-
-            <p style="font-size: 20px; margin-bottom: 40px; text-align: center;">Vi vil gerne give dig besked, når vi har væsentlige eller vedkommende historier.<br /><br />Hvis vi må det, skal du trykke på ja herunder.</p>
-
-            <button class="push-yes" onclick="pushyes();">Ja, tak. Giv mig besked!</button>
-            <button class="push-no" onclick="pushno();">Nej tak</button>
-
+    <div class="container hidden" id="invitation-container">
+        <h1 class="pulse">Hurra! Hurra! Hurra!</h1>
+        <div class="invitation">
+            <p>Du er inviteret til fest den 11. april.</p>
+            <p>Vi starter efter frittermad og vi siger farvel kl. 19.30.</p>
+            <p>Sig til dine forældre, at du vil med.</p>
         </div>
 
-        <p id="oneSignalArea"></p>
+        <audio id="festsang" loop>
+            <source src="sang.mp3" type="audio/mpeg">
+        </audio>
+    </div>
 
-        <script>
+    <canvas id="confetti-canvas"></canvas>
 
-            window.onload = function () {
-                median.onesignal.userPrivacyConsent.grant();
-            };
+    <script>
+        // Hjælpefunktion til at flytte til næste felt
+        document.querySelectorAll('.letter-input').forEach((input, index) => {
+            input.addEventListener('input', function () {
+                if (this.value.length === 1 && index < 3) {
+                    document.querySelectorAll('.letter-input')[index + 1].focus();
+                }
+            });
 
-            window.onbeforeunload = function () {
-                median.onesignal.userPrivacyConsent.revoke();
-            };
+            // Tillad kun bogstaver
+            input.addEventListener('keydown', function (e) {
+                if (!/^[a-zA-Z]$/.test(e.key) &&
+                    e.key !== 'Backspace' &&
+                    e.key !== 'Delete' &&
+                    e.key !== 'ArrowLeft' &&
+                    e.key !== 'ArrowRight' &&
+                    e.key !== 'Tab') {
+                    e.preventDefault();
+                }
+            });
+        });
 
-            function pushyes() {
+        // Tjek svaret når brugeren klikker på knappen
+        function checkAnswer() {
+            const letter1 = document.getElementById("letter1").value.toUpperCase();
+            const letter2 = document.getElementById("letter2").value.toUpperCase();
+            const letter3 = document.getElementById("letter3").value.toUpperCase();
+            const letter4 = document.getElementById("letter4").value.toUpperCase();
+            const answer = letter1 + letter2 + letter3 + letter4;
 
-                var onesignalTags = {
-                    tags: {
-                        pushnews: 1
-                    },
-                };
+            if (answer === "ADLS") {
+                document.getElementById("gaade-container").classList.add("hidden");
+                document.getElementById("invitation-container").classList.remove("hidden");
 
-                async function pushyesSub(onesignalTags) {
-                    try {
-                        await median.onesignal.register();
-                        await median.onesignal.tags.setTags(onesignalTags);
+                // Afspil sang
+                try {
+                    document.getElementById("festsang").play();
+                } catch (e) {
+                    console.log("Kunne ikke afspille sangen: " + e.message);
+                }
 
-                    } catch (error) {
-                        console.error("An error occurred:", error);
+                // Start konfetti
+                startConfetti();
+            } else {
+                alert("Forkert svar! Prøv igen.");
+            }
+        }
+
+        // Hardcore konfetti!
+        function startConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Indstil canvas til fuld skærmstørrelse
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            // Konfetti partikler
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+
+                reset() {
+                    // Danske farver: rød og hvid
+                    this.color = Math.random() > 0.5 ? '#C60C30' : '#FFFFFF';
+
+                    // Former: firkant, cirkel, stjerne eller dannebrogsflag
+                    this.shape = Math.floor(Math.random() * 4); // 0: cirkel, 1: firkant, 2: stjerne, 3: dannebrog
+
+                    // Størrelse
+                    this.size = Math.random() * 15 + 5;
+
+                    // Position - starter fra toppen af skærmen
+                    this.x = Math.random() * canvas.width;
+                    this.y = -this.size;
+
+                    // Hastighed og rotation
+                    this.vx = Math.random() * 10 - 5;
+                    this.vy = Math.random() * 10 + 5;
+                    this.rotation = 0;
+                    this.rotationSpeed = Math.random() * 0.2 - 0.1;
+
+                    // Hvor længe partiklen lever
+                    this.life = Math.random() * 100 + 100;
+                    this.opacity = 1;
+
+                    // Vind og tyngdekraft
+                    this.gravity = 0.1;
+                    this.wind = Math.random() * 0.1 - 0.05;
+                }
+
+                update() {
+                    // Opdater position
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    // Tilføj vind og tyngdekraft
+                    this.vy += this.gravity;
+                    this.vx += this.wind;
+
+                    // Rotation
+                    this.rotation += this.rotationSpeed;
+
+                    // Fade ud når partiklen er ved at dø
+                    if (this.life < 30) {
+                        this.opacity = this.life / 30;
+                    }
+
+                    // Reducer liv
+                    this.life--;
+
+                    // Reset partiklen hvis den er ude af skærmen eller død
+                    if (this.y > canvas.height || this.life <= 0) {
+                        this.reset();
                     }
                 }
 
-                pushyesSub(onesignalTags)
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation);
 
-                median.window.close();
+                    // Tegn partiklen baseret på formen
+                    ctx.fillStyle = this.color;
 
-            };
-
-            function pushno() {
-
-                var onesignalTags = {
-                    tags: {
-                        pushnews: 0
-                    },
-                };
-
-
-                async function pushnoSub(onesignalTags) {
-                    try {
-                        await median.onesignal.tags.setTags(onesignalTags);
-
-                    } catch (error) {
-                        console.error("An error occurred:", error);
+                    if (this.shape === 0) { // Cirkel
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
+                        ctx.fill();
                     }
+                    else if (this.shape === 1) { // Firkant
+                        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                    }
+                    else if (this.shape === 2) { // Stjerne
+                        this.drawStar(0, 0, 5, this.size / 2, this.size / 4);
+                    }
+                    else if (this.shape === 3) { // Dannebrogsflag
+                        this.drawDannebrog(0, 0, this.size, this.size * 0.75);
+                    }
+
+                    ctx.restore();
                 }
 
-                pushnoSub(onesignalTags)
+                drawStar(cx, cy, spikes, outerRadius, innerRadius) {
+                    let rot = Math.PI / 2 * 3;
+                    let x = cx;
+                    let y = cy;
+                    const step = Math.PI / spikes;
 
-                median.window.close();
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy - outerRadius);
 
-            };
+                    for (let i = 0; i < spikes; i++) {
+                        x = cx + Math.cos(rot) * outerRadius;
+                        y = cy + Math.sin(rot) * outerRadius;
+                        ctx.lineTo(x, y);
+                        rot += step;
 
-        </script>
-    </body>
+                        x = cx + Math.cos(rot) * innerRadius;
+                        y = cy + Math.sin(rot) * innerRadius;
+                        ctx.lineTo(x, y);
+                        rot += step;
+                    }
+
+                    ctx.lineTo(cx, cy - outerRadius);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+
+                drawDannebrog(x, y, width, height) {
+                    // Rød baggrund
+                    ctx.fillStyle = '#C60C30';
+                    ctx.fillRect(x - width / 2, y - height / 2, width, height);
+
+                    // Hvidt kors
+                    ctx.fillStyle = '#FFFFFF';
+                    // Vandret hvid linje
+                    ctx.fillRect(x - width / 2, y - height / 6, width, height / 3);
+                    // Lodret hvid linje
+                    ctx.fillRect(x - width / 6, y - height / 2, width / 3, height);
+                }
+            }
+
+            // Opret partiklerne
+            const particles = [];
+            const particleCount = 150; // Antal konfettipartikler
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            // Animation loop
+            function animate() {
+                // Ryd canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Opdater og tegn hver partikel
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+
+                // Fortsæt animationen
+                requestAnimationFrame(animate);
+            }
+
+            // Start animation
+            animate();
+
+            // Lav en kraftig eksplosion ved start
+            function createExplosion(x, y, count) {
+                for (let i = 0; i < count; i++) {
+                    const particle = new Particle();
+                    particle.x = x;
+                    particle.y = y;
+                    // Send partiklerne i alle retninger
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 15 + 5;
+                    particle.vx = Math.cos(angle) * speed;
+                    particle.vy = Math.sin(angle) * speed;
+                    particles.push(particle);
+                }
+            }
+
+            // Eksplosioner med interval
+            setTimeout(() => { createExplosion(canvas.width / 2, canvas.height / 2, 100); }, 300);
+            setTimeout(() => { createExplosion(canvas.width / 4, canvas.height / 4, 75); }, 1000);
+            setTimeout(() => { createExplosion(canvas.width * 3 / 4, canvas.height / 3, 75); }, 1700);
+            setTimeout(() => { createExplosion(canvas.width / 3, canvas.height * 2 / 3, 50); }, 2400);
+            setTimeout(() => { createExplosion(canvas.width * 2 / 3, canvas.height * 3 / 4, 50); }, 3100);
+
+            // Skab kontinuerlige små eksplosioner
+            setInterval(() => {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                createExplosion(x, y, 20);
+            }, 2000);
+        }
+    </script>
+</body>
 
 </html>
